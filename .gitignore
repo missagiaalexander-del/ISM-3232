@@ -1,2 +1,14 @@
+<<<<<<< HEAD
 .venv
 __pycache__
+=======
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+>>>>>>> 9b9ecb408b33a56e1adbe9dbe2f2d3881d47c51b
