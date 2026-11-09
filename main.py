@@ -1,5 +1,19 @@
-from chatbot import SupportChatbot
+# main.py
+# Author: Alexander Missagia
+
+from chat_bot import SupportChatbot
+from mock_model import MockModel
 from order_tool import OrderLookup
+from stock_tool import StockLookup
+
+INSTRUCTIONS = """You are Sunny, a support assistant for Bayside Outfitters.
+Shipping takes 3 to 5 business days.
+Sale items cannot be returned.
+Answer in one short sentence.
+Store hours are 10 am to 7 pm every day.
+Returns are accepted within 30 days with a receipt.
+Only state facts that appear in these instructions.
+If you do not know, say you do not know and offer to pass the customer to a human agent."""
 
 ORDERS = {
     "A100": "shipped",
@@ -7,23 +21,21 @@ ORDERS = {
     "A102": "delivered",
 }
 
+STOCK = {
+    "rain jacket": 12,
+    "day pack": 0,
+    "trail hat": 5,
+}
 
-def main():
-    order_tool = OrderLookup(ORDERS)
-    bot = SupportChatbot(
-        "Sunny",
-        "You are a friendly support assistant for Bayside Outfitters.",
-        order_tool,
-    )
+order_tool = OrderLookup(ORDERS)
+stock_tool = StockLookup(STOCK)
+model = MockModel()
+bot = SupportChatbot("Sunny", INSTRUCTIONS, order_tool, stock_tool, model)
 
-    print("Type a message, or type quit to stop.")
+print("Type a message, or type quit to stop.")
+user_message = input("You: ")
+while user_message != "quit":
+    print(f"{bot.name}: {bot.respond(user_message)}")
     user_message = input("You: ")
-    while user_message.lower() != "quit":
-        print(f"{bot.name}: {bot.respond(user_message)}")
-        user_message = input("You: ")
 
-    print(f"Messages in conversation: {len(bot.history)}")
-
-
-if __name__ == "__main__":
-    main()
+print(f"Messages in this conversation: {len(bot.history)}")
